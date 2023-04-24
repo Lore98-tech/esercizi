@@ -9,7 +9,7 @@ pygame.init()
 
 FONT = pygame.font.SysFont("comicsans", 16)
 
-WIDTH, HEIGHT = 1400,800 
+WIDTH, HEIGHT = 1400,750
 GND = 0
 WIN = pygame.display.set_mode((WIDTH, HEIGHT)) 
 pygame.display.set_caption("Proiettile") 
@@ -22,7 +22,7 @@ def main():
     i = 0
 
     while run:
-        clock.tick(200)
+        clock.tick(60)
         WIN.fill(pclass.WHITE)
         pygame.draw.rect(WIN, pclass.BLACK, pygame.Rect(0, HEIGHT - GND, WIDTH, GND))
         
@@ -33,15 +33,15 @@ def main():
                 i = i + 1
                 color = pclass.FUCSIA
                 a = pclass.Projectile(0, 0, 5, color = color)
-                a.x_vel = 0
-                a.y_vel = 0
+                a.x_vel = 100
+                a.y_vel = 10 * i - 10
                 projectiles.append(a)
-                print("Projectile n. ", i, "color = ", color)
+                print("Projectile n. ", i, "color = ", color, "x vel = ", a.x_vel, "y vel = ", a.y_vel)
 
         for projectile in projectiles:
+            projectile.update_position()
             projectile.draw(WIN)
-            projectile.draw_trajectory(WIN)
-            projectile.update_position(projectiles)
+            #rojectile.draw_trajectory(WIN)
 
         pygame.display.update()
 

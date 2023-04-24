@@ -4,7 +4,7 @@ import numpy as np
 
 pygame.init()
 
-WIDTH, HEIGHT = 1400,800 
+WIDTH, HEIGHT = 1400,750 
 GND = 0
 
 FONT = pygame.font.SysFont("comicsans", 16)
@@ -23,7 +23,7 @@ def random_color():
 
 class Projectile:
     SCALE = 1
-    TIMESTEP = 1/200
+    TIMESTEP = 1/60
     ATT_AN = 1
     WIND = 0 #*1/10 m/s
     #mu = 174 * 10**(-6) #aria
@@ -58,7 +58,6 @@ class Projectile:
                 if len(self.trajectory) > 100:
                     updated_points = updated_points[len(updated_points) - 100:]
                     
-
             pygame.draw.lines(win, BLACK, False, updated_points, 2)
             trajectory_text_x = FONT.render(f"x = {round(x/10 - WIDTH/20, 1)} m", 1, BLACK)
             trajectory_text_y = FONT.render(f"y = {round(-(y/10 - HEIGHT/10 + GND/10), 1)} m", 1, BLACK)
@@ -70,31 +69,36 @@ class Projectile:
         return force
     
     def wind(self):
-        fx = -6 * np.pi * self.mu * self.radius * (self.x_vel + self.WIND)
-        fy = -6 * np.pi * self.mu * self.radius * self.y_vel
+        if self.mu == 0:
+            fx = 0
+            fy = 0
+        else:
+            fx = -6 * np.pi * self.mu * self.radius * (self.x_vel + self.WIND)
+            fy = -6 * np.pi * self.mu * self.radius * self.y_vel
         return fx, fy
 
-    def update_position(self, projectiles):
+    def update_position(self):
         total_fx = total_fy = 0
         self.time += self.TIMESTEP
-        for projectile in projectiles:
-            wx, wy = self.wind()
-            fy = self.gravity() + wy
-            fx = wx
-            total_fx += fx
-            total_fy += fy
+        wx, wy = self.wind()
+        fy = self.gravity() + wy
+        fx = wx
+        total_fx += fx
+        total_fy += fy
 
         self.x_vel += total_fx / self.mass * self.TIMESTEP
         self.y_vel += total_fy / self.mass * self.TIMESTEP
+        print(self.x_vel, self.y_vel)
 
         self.x += self.x_vel * self.TIMESTEP
         self.y += self.y_vel * self.TIMESTEP
+
         if self.y > HEIGHT/2 - GND:
             self.y_vel = - self.y_vel * self.ATT_AN
             self.y = HEIGHT/2 - GND
             self.x_vel = self.x_vel * self.ATT_AN
-            print(self.time)
-            print(self.x/10)
+            #print(self.time)
+            #print(self.x/10)
         if self.x < -WIDTH/2:
             self.x_vel = - self.x_vel * self.ATT_AN 
             self.x = -WIDTH/2
