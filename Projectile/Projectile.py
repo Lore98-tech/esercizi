@@ -33,10 +33,10 @@ def main():
                 i = i + 1
                 color = pclass.FUCSIA
                 a = pclass.Projectile(0, 0, 5, color = color)
-                a.x_vel = 100
-                a.y_vel = 10 * i - 10
+                a.x_vel = 200 * np.cos(i/6)
+                a.y_vel = 200 * np.sin(i/6)
                 projectiles.append(a)
-                print("Projectile n. ", i, "color = ", color, "x vel = ", a.x_vel, "y vel = ", a.y_vel)
+                print("Projectile n. ", i, "color = ", color)
 
         for projectile in projectiles:
             projectile.update_position()

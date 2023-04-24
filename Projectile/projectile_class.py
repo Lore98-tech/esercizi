@@ -29,7 +29,7 @@ class Projectile:
     #mu = 174 * 10**(-6) #aria
     mu = 0
     #g = 9.81
-    g = 98.1
+    g = 0
     def __init__(self, x, y, mass, color):
         self.x = x
         self.y = y
@@ -88,7 +88,6 @@ class Projectile:
 
         self.x_vel += total_fx / self.mass * self.TIMESTEP
         self.y_vel += total_fy / self.mass * self.TIMESTEP
-        print(self.x_vel, self.y_vel)
 
         self.x += self.x_vel * self.TIMESTEP
         self.y += self.y_vel * self.TIMESTEP
