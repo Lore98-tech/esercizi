@@ -4,8 +4,8 @@ import numpy as np
 
 pygame.init()
 
-WIDTH, HEIGHT = 1400,750 
-GND = 0
+WIDTH, HEIGHT = 1400,800 
+GND = 100
 
 FONT = pygame.font.SysFont("comicsans", 16)
 
@@ -14,6 +14,7 @@ FUCSIA = (200, 0, 200)
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)
 YELLOW = (255, 255, 0)
+GREEN = (50, 205, 50)
 
 def random_color():
     r = random.randint(0, 255)
@@ -23,13 +24,12 @@ def random_color():
 
 class Projectile:
     SCALE = 1
-    TIMESTEP = 1/60
+    TIMESTEP = 1/120
     ATT_AN = 1
-    WIND = 0 #*1/10 m/s
-    #mu = 174 * 10**(-6) #aria
-    mu = 0
-    #g = 9.81
-    g = 0
+    WIND = -0 #*1/10 m/s
+    mu = 1800 * 10**(-6) #aria
+    #mu = 0
+    g = 98.1
     def __init__(self, x, y, mass, color):
         self.x = x
         self.y = y
@@ -96,8 +96,7 @@ class Projectile:
             self.y_vel = - self.y_vel * self.ATT_AN
             self.y = HEIGHT/2 - GND
             self.x_vel = self.x_vel * self.ATT_AN
-            #print(self.time)
-            #print(self.x/10)
+            print("Land time: ", self.time, "s, Land x: ", self.x/10, self.x_vel, self.y_vel)
         if self.x < -WIDTH/2:
             self.x_vel = - self.x_vel * self.ATT_AN 
             self.x = -WIDTH/2
